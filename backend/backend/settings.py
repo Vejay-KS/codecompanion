@@ -143,3 +143,10 @@ MESSAGE_TAGS = {
         messages.WARNING: 'alert-warning',
         messages.ERROR: 'alert-danger',
  }
+
+AUTH_USER_MODEL = 'codecompanionapp.CodeCompanionUser'
+
+ACCOUNT_AUTHENTICATION_METHOD ="username"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

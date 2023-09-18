@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import CodeCompanionUser
 
 
 # Create your forms here.
@@ -14,7 +14,7 @@ class NewUserForm(UserCreationForm):
 	role = forms.ChoiceField(choices=choices)
 
 	class Meta:
-		model = User
+		model = CodeCompanionUser
 		fields = ("username", "password1", "password2", "email")
 
 	def save(self, commit=True):

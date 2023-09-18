@@ -6,13 +6,50 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
-        {% if user.is_authenticated %}
-        
+        {% if request.user.is_authenticated and request.user.role == "SoftwareDeveloper" %}
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/codeOptimizer">Code Optimizer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/codeDebugger">Code Debugger</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/codeReviewer">Code Reviewer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/commentGenerator">Comment Generator</a>
+        </li>
+        {% elif request.user.is_authenticated and request.user.role == "SoftwareDevelopmentManager" %}
+        <li class="nav-item">
+          <a class="nav-link" href="/documentationHelper">Documentation Helper</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/learningPathRecommendations">LearningPathRecommendations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/letterGenerator">Letter Generator</a>
+        </li>
+        {% elif request.user.is_authenticated and request.user.role == "HumanResourcesManager" %}
+        <li class="nav-item">
+          <a class="nav-link" href="/resumeFilterer">Resume Filterer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/summarizeAppraisals">SUmmarize Appraisals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/technicalGenerator">Technical Generator</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/unitTestGenerator">Unit Test Generator</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
         </li>
   
         {% else %}
@@ -20,7 +57,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
-  
+        <li class="nav-item">
+          <a class="nav-link" href="#">Undefined Role</a>
+        </li>
         {% endif %}
       </ul>
     </div>

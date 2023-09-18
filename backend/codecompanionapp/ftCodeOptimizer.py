@@ -1,33 +1,25 @@
 from django import forms
-import requests
-import json
-import os
-from bardapi import Bard
+from codecompanionapp.BaseLLM import BaseLLM1
 
-API_KEY = ""
-API_ENDPOINT = ""
-BARD_TOKEN = ''
-
-class CodeOptimizerForm(forms.Form):
+class CodeOptimizerForm(forms.Form, BaseLLM1):
+    
     input_code = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
     base_fields = [input_code]
+    
+    def create_message_CodeOptimizer(self, input_message):
+        message = "" + input_message
+        return message
+    
+    def generate_chat_completion(self, input_message, max_tokens=100):
 
-    def generate_chat_completion(self, messages, model="gpt-3.5-turbo-0613", temperature=1, max_tokens=100):
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {API_KEY}",
-        }
-
-        data = {
-            "model": model,
-            "messages": messages,
-            "temperature": temperature,
-        }
+        headers = CodeOptimizerForm.get_headers()
+        message = CodeOptimizerForm.create_message_CodeOptimizer(input_message)
+        data = CodeOptimizerForm.get_data(messages=message)
 
         if max_tokens is not None:
             data["max_tokens"] = max_tokens
 
-        response = requests.post(API_ENDPOINT, headers=headers, data=json.dumps(data))
+        response = CodeOptimizerForm.get_response(headers, data)
         print(response)
 
         if response.status_code == 200:
