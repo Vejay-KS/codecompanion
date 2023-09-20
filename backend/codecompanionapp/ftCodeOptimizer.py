@@ -1,7 +1,7 @@
 from django import forms
-from codecompanionapp.BaseLLM import BaseLLM1
+from codecompanionapp import BaseLLM
 
-class CodeOptimizerForm(forms.Form, BaseLLM1):
+class CodeOptimizerForm(forms.Form, BaseLLM.BaseLLM1):
     
     input_code = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
     base_fields = [input_code]

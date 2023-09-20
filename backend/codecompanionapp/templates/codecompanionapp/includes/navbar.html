@@ -6,13 +6,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
-        {% if request.user.is_authenticated and request.user.role == "SoftwareDeveloper" %}
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Welcome, {{user.username}}</a>
         </li>
+        {% if request.user.is_authenticated and request.user.role == "SoftwareDeveloper" %}
         <li class="nav-item">
           <a class="nav-link" href="/codeOptimizer">Code Optimizer</a>
         </li>
@@ -35,12 +35,12 @@
         <li class="nav-item">
           <a class="nav-link" href="/letterGenerator">Letter Generator</a>
         </li>
-        {% elif request.user.is_authenticated and request.user.role == "HumanResourcesManager" %}
+        {% elif request.user.is_authenticated and request.user.role == "HumanResourceManager" %}
         <li class="nav-item">
           <a class="nav-link" href="/resumeFilterer">Resume Filterer</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/summarizeAppraisals">SUmmarize Appraisals</a>
+          <a class="nav-link" href="/summarizeAppraisals">Summarize Appraisals</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/technicalGenerator">Technical Generator</a>
@@ -57,9 +57,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Undefined Role</a>
-        </li>
+
         {% endif %}
       </ul>
     </div>

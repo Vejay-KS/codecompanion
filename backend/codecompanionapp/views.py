@@ -93,13 +93,17 @@ def resume_filterer(request):
 		print(form.errors)
 		if form.is_valid():
 			print("form_valid")
-			input_file1 = request.FILES['input_file1']
-			input_file2 = request.FILES['input_file2']
-			input_file3 = request.FILES['input_file3']
-			input_file = FilesHandler.FileHandler.read_file(input_file1) + '\n' + FilesHandler.FileHandler.read_file(input_file2) + '\n' + FilesHandler.FileHandler.read_file(input_file3)
+			# input_file1 = request.FILES.get('input_file1')
+			# input_file2 = request.FILES.get('input_file2')
+			# input_file3 = request.FILES.get('input_file3', "")
+			input_file1 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file1'))
+			input_file2 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file2'))
+			input_file3 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file3', ""))
+			input_file = input_file1 + '\n' + input_file2 + '\n' + input_file3
 			print("Files received")
+			input_message = form.cleaned_data.get('input_job_role')
 			#messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(input_file)
+			responseFromLLM = form.generate_chat_completion(input_file, input_message)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftResumeFilterer.ResumeFiltererForm()
