@@ -6,13 +6,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Welcome, {{user.username}}</a>
         </li>
-        {% if request.user.is_authenticated and request.user.role == "SoftwareDeveloper" %}
+        {% if request.user.is_authenticated and request.user.ROLE == "SOFTWAREDEVELOPER" %}
         <li class="nav-item">
           <a class="nav-link" href="/codeOptimizer">Code Optimizer</a>
         </li>
@@ -25,7 +26,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/commentGenerator">Comment Generator</a>
         </li>
-        {% elif request.user.is_authenticated and request.user.role == "SoftwareDevelopmentManager" %}
+        {% elif request.user.is_authenticated and request.user.ROLE == "SOFTWAREDEVELOPMENTMANAGER" %}
         <li class="nav-item">
           <a class="nav-link" href="/documentationHelper">Documentation Helper</a>
         </li>
@@ -35,7 +36,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/letterGenerator">Letter Generator</a>
         </li>
-        {% elif request.user.is_authenticated and request.user.role == "HumanResourceManager" %}
+        {% elif request.user.is_authenticated and request.user.ROLE == "HUMANRESOURCEMANAGER" %}
         <li class="nav-item">
           <a class="nav-link" href="/resumeFilterer">Resume Filterer</a>
         </li>
@@ -48,17 +49,22 @@
         <li class="nav-item">
           <a class="nav-link" href="/unitTestGenerator">Unit Test Generator</a>
         </li>
+        
+        {% else %}
+  
         <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
+          <a class="nav-link" href="/login">Undefined Role</a>
         </li>
   
+        {% endif %}
+
         {% else %}
   
         <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
 
-        {% endif %}
+      {% endif %}
       </ul>
     </div>
   </nav>

@@ -6,12 +6,9 @@ from .models import CodeCompanionUser
 # Create your forms here.
 
 class NewUserForm(UserCreationForm):
-	choices = (("SoftwareDeveloper","Software Developer"), 
-			("SoftwareDevelopmentManager","Software Development Manager"),
-			("HumanResourceManager","Human Resource Manager"))
-
+	choices = CodeCompanionUser.UserRoles.choices
 	email = forms.EmailField(required=True)
-	role = forms.ChoiceField(choices=choices)
+	ROLE = forms.ChoiceField(choices=choices)
 
 	class Meta:
 		model = CodeCompanionUser
@@ -20,7 +17,7 @@ class NewUserForm(UserCreationForm):
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
 		user.email = self.cleaned_data['email']
-		user.role = self.cleaned_data['role']
+		user.ROLE = self.cleaned_data['ROLE']
 		if commit:
 			user.save()
 		return user

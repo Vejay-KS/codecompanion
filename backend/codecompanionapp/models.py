@@ -10,11 +10,7 @@ class Codecompaniontest(models.Model):
 
     def _str_(self):
         return self.title
-    
 
-ROLE_CHOICES = (("SoftwareDeveloper","Software Developer"), 
-			("SoftwareDevelopmentManager","Software Development Manager"),
-			("HumanResourceManager","Human Resource Manager"))
 
 class CodeCompanionUser(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
@@ -24,11 +20,30 @@ class CodeCompanionUser(AbstractUser):
     password2=models.CharField(max_length=200)
     email = models.EmailField()
 
-    role = models.CharField(
-        max_length=200,
-        choices = ROLE_CHOICES,
-        default = 'SoftwareDeveloper'
-        )
+    class UserRoles(models.TextChoices):
+        SOFTWAREDEVELOPER = "SOFTWAREDEVELOPER", 'Software Developer'
+        SOFTWAREDEVELOPMENTMANAGER = "SOFTWAREDEVELOPMENTMANAGER", 'Software Development Manager'
+        HUMANRESOURCEMANAGER = "HUMANRESOURCEMANAGER", 'Human Resource Manager'
+
+    BASE_ROLE = UserRoles.SOFTWAREDEVELOPER
+    ROLE = models.CharField(max_length=50, choices=UserRoles.choices, default=BASE_ROLE)
     
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = [password1, password2, email, role]
+    REQUIRED_FIELDS = [password1, password2, email, ROLE]
+
+class CodeCompanionSD(CodeCompanionUser):
+    LEVEL_CHOICES = ((1, 'Junior'), (2, 'Senior'))
+    BASE_ROLE = CodeCompanionUser.BASE_ROLE.SOFTWAREDEVELOPER
+    sdlevel = models.CharField(max_length=50, choices=LEVEL_CHOICES)
+
+
+class CodeCompanionSDM(CodeCompanionUser):
+    LEVEL_CHOICES = ((1, 'Junior'), (2, 'Senior'))
+    BASE_ROLE = CodeCompanionUser.BASE_ROLE.SOFTWAREDEVELOPMENTMANAGER
+    sdmlevel = models.CharField(max_length=50, choices=LEVEL_CHOICES)
+
+
+class CodeCompanionHRM(CodeCompanionUser):
+    LEVEL_CHOICES = ((1, 'Junior'), (2, 'Senior'))
+    BASE_ROLE = CodeCompanionUser.BASE_ROLE.HUMANRESOURCEMANAGER
+    hrmlevel = models.CharField(max_length=50, choices=LEVEL_CHOICES)
