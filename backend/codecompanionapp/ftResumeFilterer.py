@@ -2,26 +2,25 @@ from django import forms
 from codecompanionapp import BaseLLM, FilesHandler
 
 class ResumeFiltererForm(forms.Form, BaseLLM.BaseLLM1):
-    INPUT_FILE_LABEL = 'Upload a file'
-    INPUT_HELP_TEXT = 'maximum 5MB'
+    __INPUT_FILE_HELP_TEXT = 'maximum 5MB'
 
     input_file1 = forms.FileField(
         label='Upload File 1',
-        help_text=INPUT_HELP_TEXT
+        help_text=__INPUT_FILE_HELP_TEXT
     )
     input_file2 = forms.FileField(
         label='Upload File 2',
-        help_text=INPUT_HELP_TEXT
+        help_text=__INPUT_FILE_HELP_TEXT
     )
     input_file3 = forms.FileField(
         label='Upload File 3',
-        help_text=INPUT_HELP_TEXT,
+        help_text=__INPUT_FILE_HELP_TEXT,
         required=False
     )
     input_job_role = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
     base_fields = [input_job_role, input_file1, input_file2]
     
-    def create_message_ResumeFilterer(self, input_file, input_data):
+    def __create_message_ResumeFilterer(self, input_file, input_data):
         message = "" + input_data + input_file
         return message
     
@@ -39,14 +38,14 @@ class ResumeFiltererForm(forms.Form, BaseLLM.BaseLLM1):
             else:
                 file_data = FilesHandler.FileHandler.read_file(input_file)
             print(file_data)
-            headers = ResumeFiltererForm.get_headers(self)
-            message = ResumeFiltererForm.create_message_ResumeFilterer(self, file_data, input_message)
-            data = ResumeFiltererForm.get_data(self, messages=message)
+            headers = ResumeFiltererForm._get_headers(self)
+            message = ResumeFiltererForm.__create_message_ResumeFilterer(self, file_data, input_message)
+            data = ResumeFiltererForm._get_data(self, messages=message)
 
             if max_tokens is not None:
                 data["max_tokens"] = max_tokens
 
-            response = ResumeFiltererForm.get_response(self, headers, data)
+            response = ResumeFiltererForm._get_response(self, headers, data)
         else:
             file_data = "NO DATA"
             response = file_data
