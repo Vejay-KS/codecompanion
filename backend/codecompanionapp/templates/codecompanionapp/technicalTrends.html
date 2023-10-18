@@ -10,7 +10,7 @@
 	<form method="post">
         {% csrf_token %}
         <div class="row">
-            {{technical Generator_form.input_code|as_crispy_field}}
+            {{technicalTrends_form.input_domain|as_crispy_field}}
         </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

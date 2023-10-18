@@ -21,7 +21,7 @@ class ResumeFiltererForm(forms.Form, BaseLLM.BaseLLM1):
     base_fields = [input_job_role, input_file1, input_file2]
     
     def __create_message_ResumeFilterer(self, input_file, input_data):
-        message = "" + input_data + input_file
+        message = "Filter and Select one resume from the given below 3 resumes for the role of" +  input_data + ". The resumes are separated by \"=====\". \n" + input_file
         return message
     
     def generate_chat_completion(self, input_file, input_message, max_tokens=100):

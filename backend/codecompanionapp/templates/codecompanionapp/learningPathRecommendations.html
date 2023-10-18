@@ -10,7 +10,10 @@
 	<form method="post">
         {% csrf_token %}
         <div class="row">
-            {{learningPathRecommendation_form.input_code|as_crispy_field}}
+            {{learningPathRecommendation_form.input_current_expertise|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{learningPathRecommendation_form.input_current_designation|as_crispy_field}}
         </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

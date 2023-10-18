@@ -10,7 +10,19 @@
 	<form method="post">
         {% csrf_token %}
         <div class="row">
-            {{letterGenerator_form.input_code|as_crispy_field}}
+            {{letterGenerator_form.input_name|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{letterGenerator_form.input_type_of_letter|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{letterGenerator_form.input_extra_details|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{letterGenerator_form.input_organisation_details|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{letterGenerator_form.input_designation|as_crispy_field}}
         </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

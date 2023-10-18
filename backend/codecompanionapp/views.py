@@ -6,7 +6,8 @@ from django.contrib import messages
 from rest_framework import viewsets
 from .serializers import CodecompaniontestSerializer
 from .models import Codecompaniontest, CodeCompanionUser
-from codecompanionapp import FilesHandler, ftCodeOptimizer, ftDocumentationHelper, ftCodeDebugger, ftCodeReviewer, ftCommentGenerator, ftLearningPathRecommendations, ftLetterGenerator, ftResumeFilterer, ftSummarizeAppraisals, ftTechnicalTrends, ftUnitTestGenerator
+from codecompanionapp import JavaFiles, PythonFiles, FilesHandler, ftCodeOptimizer, ftDocumentationHelper, ftCodeDebugger, ftCodeReviewer, ftCommentGenerator, ftLearningPathRecommendations, ftLetterGenerator, ftResumeFilterer, ftSummarizeAppraisals, ftTechnicalTrends, ftUnitTestGenerator
+
 
 # Create your views here.
 
@@ -55,81 +56,43 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.") 
 	return redirect(app_home)
 
+def code_debugger(request):
+	if request.method == "POST":
+		form = ftCodeDebugger.CodeDebuggerForm(request.POST, request.FILES)
+		if form.is_valid():
+			file_name = request.FILES['input_file'].name
+			if file_name.endswith(JavaFiles.JavaFile.get_file_type()):
+				input_file = JavaFiles.JavaFile.read_file(request.FILES.get('input_file', ""))
+			elif file_name.endswith(PythonFiles.PythonFile.get_file_type()):
+				input_file = PythonFiles.PythonFile.read_file(request.FILES.get('input_file', ""))
+			else:
+				input_file = ""
+			input_code = form.cleaned_data.get('input_code')
+			responseFromLLM = form.generate_chat_completion(input_file, input_code)
+			print(responseFromLLM)
+			return redirect(app_home)
+	form = ftCodeDebugger.CodeDebuggerForm()
+	return render(request=request, template_name="codecompanionapp/codeDebugger.html", context={"codeDebugger_form":form})
+
+
 def code_optimizer(request):
 	if request.method == "POST":
 		form = ftCodeOptimizer.CodeOptimizerForm(request.POST)
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
 			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			responseFromLLM = form.generate_chat_completion(input_code)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftCodeOptimizer.CodeOptimizerForm()
 	return render(request=request, template_name="codecompanionapp/codeOptimizer.html", context={"codeOptimizer_form":form})
-
-
-def documentation_helper(request):
-	if request.method == "POST":
-		form = ftDocumentationHelper.DocumentationHelperForm(request.POST, request.FILES)
-		print("post")
-		print(form.errors)
-		if form.is_valid():
-			print("form_valid")
-			input_file = request.FILES['input_file']
-			print("File received")
-			#messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(input_file)
-			print(responseFromLLM)
-			return redirect(app_home)
-	form = ftDocumentationHelper.DocumentationHelperForm()
-	return render(request=request, template_name="codecompanionapp/documentationHelper.html", context={"documentationHelper_form":form})
-
-
-def resume_filterer(request):
-	if request.method == "POST":
-		form = ftResumeFilterer.ResumeFiltererForm(request.POST, request.FILES)
-		print("post")
-		print(form.errors)
-		if form.is_valid():
-			print("form_valid")
-			# input_file1 = request.FILES.get('input_file1')
-			# input_file2 = request.FILES.get('input_file2')
-			# input_file3 = request.FILES.get('input_file3', "")
-			input_file1 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file1'))
-			input_file2 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file2'))
-			input_file3 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file3', ""))
-			input_file = input_file1 + '\n' + input_file2 + '\n' + input_file3
-			print("Files received")
-			input_message = form.cleaned_data.get('input_job_role')
-			#messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(input_file, input_message)
-			print(responseFromLLM)
-			return redirect(app_home)
-	form = ftResumeFilterer.ResumeFiltererForm()
-	return render(request=request, template_name="codecompanionapp/resumeFilterer.html", context={"resumeFilterer_form":form})
-
-def code_debugger(request):
-	if request.method == "POST":
-		form = ftCodeDebugger.CodeDebuggerForm(request.POST)
-		if form.is_valid():
-			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
-			print(responseFromLLM)
-			return redirect(app_home)
-	form = ftCodeDebugger.CodeDebuggerForm()
-	return render(request=request, template_name="codecompanionapp/codeDebugger.html", context={"codeDebugger_form":form})
 
 def code_reviewer(request):
 	if request.method == "POST":
 		form = ftCodeReviewer.CodeReviewerForm(request.POST)
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			responseFromLLM = form.generate_chat_completion(input_code)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftCodeReviewer.CodeReviewerForm()
@@ -141,22 +104,19 @@ def comment_generator(request):
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
 			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			responseFromLLM = form.generate_chat_completion(input_code)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftCommentGenerator.CommentGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/commentGenerator.html", context={"commentGenerator_form":form})
 
-
 def documentation_helper(request):
 	if request.method == "POST":
-		form = ftDocumentationHelper.DocumentationHelperForm(request.POST)
+		form = ftDocumentationHelper.DocumentationHelperForm(request.POST, request.FILES)
 		if form.is_valid():
+			input_file = FilesHandler.FileHandler.read_file(request.FILES.get('input_file'))
 			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			responseFromLLM = form.generate_chat_completion(input_file, input_code)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftDocumentationHelper.DocumentationHelperForm()
@@ -166,10 +126,11 @@ def learning_path_recommendation(request):
 	if request.method == "POST":
 		form = ftLearningPathRecommendations.LearningPathRecommendationsForm(request.POST)
 		if form.is_valid():
-			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			input_current_designation = form.cleaned_data.get('input_current_designation')
+			input_current_expertise = form.cleaned_data.get('input_current_expertise')
+			print(input_current_expertise)
+			print(input_current_designation)
+			responseFromLLM = form.generate_chat_completion(input_current_expertise, input_current_designation)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftLearningPathRecommendations.LearningPathRecommendationsForm()
@@ -179,23 +140,46 @@ def letter_generator(request):
 	if request.method == "POST":
 		form = ftLetterGenerator.LetterGeneratorForm(request.POST)
 		if form.is_valid():
-			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			input_name = form.cleaned_data.get('input_name')
+			input_type_of_letter = form.cleaned_data.get('input_type_of_letter')
+			input_extra_details = form.cleaned_data.get('input_extra_details')
+			input_organisation_details = form.cleaned_data.get('input_organisation_details')
+			input_designation = form.cleaned_data.get('input_designation')
+			print(input_name)
+			print(input_type_of_letter)
+			print(input_extra_details)
+			print(input_organisation_details)
+			print(input_designation)
+			responseFromLLM = form.generate_chat_completion(input_name, input_type_of_letter, input_extra_details, input_organisation_details, input_designation)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftLetterGenerator.LetterGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/letterGenerator.html", context={"letterGenerator_form":form})
 
+def resume_filterer(request):
+	if request.method == "POST":
+		form = ftResumeFilterer.ResumeFiltererForm(request.POST, request.FILES)
+		if form.is_valid():
+			input_file1 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file1'))
+			input_file2 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file2'))
+			input_file3 = FilesHandler.FileHandler.read_file(request.FILES.get('input_file3', ""))
+			input_file = input_file1 + '\n' + input_file2 + '\n' + input_file3
+			input_message = form.cleaned_data.get('input_job_role')
+			responseFromLLM = form.generate_chat_completion(input_file, input_message)
+			print(responseFromLLM)
+			return redirect(app_home)
+	form = ftResumeFilterer.ResumeFiltererForm()
+	return render(request=request, template_name="codecompanionapp/resumeFilterer.html", context={"resumeFilterer_form":form})
+
+
 def summarize_appraisals(request):
 	if request.method == "POST":
-		form = ftSummarizeAppraisals.SummarizeAppraisalsForm(request.POST)
+		form = ftSummarizeAppraisals.SummarizeAppraisalsForm(request.POST, request.FILES)
 		if form.is_valid():
-			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			input_file = FilesHandler.FileHandler.read_file(request.FILES.get('input_file'))
+			input_appraisal = form.cleaned_data.get('input_appraisal')
+			print(input_appraisal)
+			responseFromLLM = form.generate_chat_completion(input_file, input_appraisal)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftSummarizeAppraisals.SummarizeAppraisalsForm()
@@ -205,10 +189,9 @@ def technical_trends(request):
 	if request.method == "POST":
 		form = ftTechnicalTrends.TechnicalTrendsForm(request.POST)
 		if form.is_valid():
-			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			input_domain = form.cleaned_data.get('input_domain')
+			print(input_domain)
+			responseFromLLM = form.generate_chat_completion(input_domain)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftTechnicalTrends.TechnicalTrendsForm()
@@ -220,9 +203,12 @@ def unit_test_generator(request):
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
 			print(input_code)
-			messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]
-			responseFromLLM = form.generate_chat_completion(messages)
+			responseFromLLM = form.generate_chat_completion(input_code)
 			print(responseFromLLM)
 			return redirect(app_home)
 	form = ftUnitTestGenerator.UnitTestGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/unitTestGenerator.html", context={"unitTestGenerator_form":form})
+
+
+
+#messages = [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": input_code}]

@@ -7,13 +7,16 @@
 <!--Code Optimizer--> 
 <div class="container py-5">
 	<h1>Code Debugger</h1>
-	<form method="post">
+	<form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="row">
+            {{codeDebugger_form.input_file|as_crispy_field}}
+        </div>
         <div class="row">
             {{codeDebugger_form.input_code|as_crispy_field}}
         </div>
             <button class="btn btn-primary" type="submit">Submit</button>
-        </form>
+    </form>
 </div>
 
 {% endblock %}

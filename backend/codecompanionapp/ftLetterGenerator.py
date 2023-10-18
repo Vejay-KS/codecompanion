@@ -3,41 +3,27 @@ from codecompanionapp import BaseLLM, FilesHandler
 
 class LetterGeneratorForm(forms.Form, BaseLLM.BaseLLM1):
     
-    input_code = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
-    base_fields = [input_code]
+    input_name = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    input_type_of_letter = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    input_extra_details = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    input_organisation_details = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    input_designation = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    base_fields = [input_name, input_type_of_letter, input_extra_details, input_organisation_details, input_designation]
     
-    def create_message_LetterGenerator(self, input_message):
-        message = "" + input_message
+    def create_message_LetterGenerator(self, input_name, input_type_of_letter, input_extra_details, input_organisation_details, input_designation):
+        message = "Generate a " + input_type_of_letter + " letter for " + input_name + " with " + input_extra_details + " as extra details " + " and organization's details as " + input_organisation_details + " and signed with designation as " + input_designation
         return message
     
-    def generate_chat_completion(self, input_file, input_message, max_tokens=100):
+    def generate_chat_completion(self, input_name, input_type_of_letter, input_extra_details, input_organisation_details, input_designation, max_tokens=100):
 
-        print(type(input_file))
-        if type(input_file) == type(""):
-            file_lines = len(input_file)
-        else:
-            file_lines = FilesHandler.FileHandler.number_of_lines(input_file)
-        print(file_lines)
-        if(file_lines > 10):
-            if type(input_file) == type(""):
-                file_data = input_file
-            else:
-                file_data = FilesHandler.FileHandler.read_file(input_file)
-            print(file_data)
-            headers = LetterGeneratorForm.get_headers(self)
-            message = LetterGeneratorForm.create_message_LetterGenerator(self, input_message)
-            data = LetterGeneratorForm.get_data(self, messages=message)
+        headers = LetterGeneratorForm._get_headers(self)
+        message = LetterGeneratorForm.create_message_LetterGenerator(self, input_name, input_type_of_letter, input_extra_details, input_organisation_details, input_designation)
+        data = LetterGeneratorForm._get_data(self, messages=message)
 
-            if max_tokens is not None:
-                data["max_tokens"] = max_tokens
+        if max_tokens is not None:
+            data["max_tokens"] = max_tokens
 
-            response = LetterGeneratorForm.get_response(self, headers, data)
-        else:
-            file_data = "NO DATA"
-            response = file_data
-            return response
-        
-        print(response)
+        response = LetterGeneratorForm._get_response(self, headers, data)
 
         if response.status_code == 200:
             return response.json()["choices"][0]["message"]["content"]

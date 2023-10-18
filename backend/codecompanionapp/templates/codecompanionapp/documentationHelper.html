@@ -10,7 +10,10 @@
 	<form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
-            {{documentationHelper_form.input_file1|as_crispy_field}}
+            {{documentationHelper_form.input_file|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{documentationHelper_form.input_code|as_crispy_field}}
         </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

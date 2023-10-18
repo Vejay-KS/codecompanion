@@ -3,23 +3,23 @@ from codecompanionapp import BaseLLM
 
 class TechnicalTrendsForm(forms.Form, BaseLLM.BaseLLM1):
     
-    input_code = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
-    base_fields = [input_code]
+    input_domain = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    base_fields = [input_domain]
     
-    def create_message_CodeOptimizer(self, input_message):
-        message = "" + input_message
+    def create_message_TechnicalTrends(self, input_domain):
+        message = "What are the current and future trends of " + input_domain + " ? \n"
         return message
     
     def generate_chat_completion(self, input_message, max_tokens=100):
 
-        headers = TechnicalTrendsForm.get_headers()
-        message = TechnicalTrendsForm.create_message_CodeOptimizer(input_message)
-        data = TechnicalTrendsForm.get_data(messages=message)
+        headers = TechnicalTrendsForm._get_headers(self)
+        message = TechnicalTrendsForm.create_message_TechnicalTrends(self, input_message)
+        data = TechnicalTrendsForm._get_data(self, messages=message)
 
         if max_tokens is not None:
             data["max_tokens"] = max_tokens
 
-        response = TechnicalTrendsForm.get_response(headers, data)
+        response = TechnicalTrendsForm._get_response(self, headers, data)
         print(response)
 
         if response.status_code == 200:

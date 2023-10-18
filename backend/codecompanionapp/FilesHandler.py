@@ -18,3 +18,6 @@ class FileHandler():
                 file_data = file_data + line.decode("utf-8")
             file_data = file_data + "====="
         return file_data
+    
+    def get_file_type(self):
+        pass

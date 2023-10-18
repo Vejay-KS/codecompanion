@@ -10,7 +10,10 @@
 	<form method="post">
         {% csrf_token %}
         <div class="row">
-            {{summarizeAppraisals_form.input_code|as_crispy_field}}
+            {{summarizeAppraisals_form.input_file|as_crispy_field}}
+        </div>
+        <div class="row">
+            {{summarizeAppraisals_form.input_appraisal|as_crispy_field}}
         </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

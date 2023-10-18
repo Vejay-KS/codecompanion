@@ -3,23 +3,24 @@ from codecompanionapp import BaseLLM
 
 class LearningPathRecommendationsForm(forms.Form, BaseLLM.BaseLLM1):
     
-    input_code = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
-    base_fields = [input_code]
+    input_current_expertise = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    input_current_designation = forms.CharField(widget=forms.TextInput(attrs={ 'required': 'true' }))
+    base_fields = [input_current_expertise, input_current_designation]
     
-    def create_message_CodeOptimizer(self, input_message):
-        message = "" + input_message
+    def create_message_LearningPathRecommendations(self, input_current_expertise, input_current_designation):
+        message = "Provide learning path recommendations for " + input_current_designation + " with expertise in " + input_current_expertise
         return message
     
-    def generate_chat_completion(self, input_message, max_tokens=100):
+    def generate_chat_completion(self, input_current_expertise, input_current_designation, max_tokens=100):
 
-        headers = LearningPathRecommendationsForm.get_headers()
-        message = LearningPathRecommendationsForm.create_message_CodeOptimizer(input_message)
-        data = LearningPathRecommendationsForm.get_data(messages=message)
+        headers = LearningPathRecommendationsForm._get_headers(self)
+        message = LearningPathRecommendationsForm.create_message_LearningPathRecommendations(self, input_current_expertise, input_current_designation)
+        data = LearningPathRecommendationsForm._get_data(self, messages=message)
 
         if max_tokens is not None:
             data["max_tokens"] = max_tokens
 
-        response = LearningPathRecommendationsForm.get_response(headers, data)
+        response = LearningPathRecommendationsForm._get_response(self, headers, data)
         print(response)
 
         if response.status_code == 200:
