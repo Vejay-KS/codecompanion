@@ -4,17 +4,17 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from rest_framework import viewsets
-from .serializers import CodecompaniontestSerializer
-from .models import Codecompaniontest, CodeCompanionUser
+from .serializers import CodeCompanionUserSerializer
+from .models import CodeCompanionUser
 from codecompanionapp import JavaFiles, PythonFiles, FilesHandler, ftCodeOptimizer, ftDocumentationHelper, ftCodeDebugger, ftCodeReviewer, ftCommentGenerator, ftLearningPathRecommendations, ftLetterGenerator, ftResumeFilterer, ftSummarizeAppraisals, ftTechnicalTrends, ftUnitTestGenerator
 
 
 # Create your views here.
 
 # Test View
-class CodecompaniontestView(viewsets.ModelViewSet):
-    serializer_class = CodecompaniontestSerializer
-    queryset = Codecompaniontest.objects.all()
+class CodecompanionView(viewsets.ModelViewSet):
+    serializer_class = CodeCompanionUserSerializer
+    queryset = CodeCompanionUser.objects.all()
 
 app_home = "homepage"
 def homepage(request):

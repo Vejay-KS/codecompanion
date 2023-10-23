@@ -144,7 +144,11 @@ MESSAGE_TAGS = {
         messages.ERROR: 'alert-danger',
  }
 
-AUTH_USER_MODEL = 'codecompanionapp.CodeCompanionUser'
+AUTH_USER_MODEL = 'codecompanionapp.codecompanionuser'
+#AUTH_USER_MODEL = 'codecompanionapp.CodeCompanionUser'
+
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD="username"
 
 ACCOUNT_AUTHENTICATION_METHOD ="username"
 

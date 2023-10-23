@@ -15,14 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from rest_framework import routers
 from codecompanionapp import views
+from django.conf.urls import include
 
 app_name = "codecompanionapp"   
 
 router = routers.DefaultRouter()
-router.register(r'codecompanions', views.CodecompaniontestView, 'codecompaniontest')
+router.register(r'codecompanions', views.CodecompanionView, 'codecompanionview')
+
+#path('auth/', include('rest_auth.urls')),
 
 urlpatterns = [
     path('', views.homepage, name="homepage"),
