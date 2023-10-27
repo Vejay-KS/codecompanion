@@ -23,7 +23,7 @@ const CommentGeneratorFormUI = () => {
   };
 
   return (
-    <div>
+    <div className="input-container">
       <input type="text" value={inputCode} onChange={(e) => setInputCode(e.target.value)} />
       <button onClick={handleSubmit}>Generate Comments</button>
       <div>{codeCompletion}</div>

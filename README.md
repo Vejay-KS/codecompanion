@@ -8,4 +8,3 @@ pipenv shell
 
 pip install django
 
-Test

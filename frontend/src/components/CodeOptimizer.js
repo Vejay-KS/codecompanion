@@ -24,7 +24,7 @@ const CodeOptimizerFormUI = () => {
   };
 
   return (
-    <div>
+    <div className="input-container">
       <input type="text" value={inputCode} onChange={(e) => setInputCode(e.target.value)} />
       <button onClick={handleSubmit}>Generate Code Completion</button>
       <div>{codeCompletion}</div>

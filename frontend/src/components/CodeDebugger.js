@@ -24,7 +24,7 @@ const CodeDebuggerFormUI = () => {
   };
 
   return (
-    <div>
+    <div className="input-container">
       <input type="text" value={inputCode} onChange={(e) => setInputCode(e.target.value)} />
       <button onClick={handleSubmit}>Debug Code</button>
       <div>{codeCompletion}</div>

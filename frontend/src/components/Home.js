@@ -1,8 +1,5 @@
 ﻿import React from "react";
-import CodeOptimizerFormUI from "./CodeOptimizer";
-import CodeDebuggerFormUI from "./CodeDebugger";
-import CodeReviewerFormUI from "./CodeReviewer";
-import CommentGeneratorFormUI from "./CommentGenerator";
+import '../App.css';
 
 const HomePage = () => {
   const [activeSection, setActiveSection] = React.useState("code-optimiser");
@@ -14,22 +11,22 @@ const HomePage = () => {
   const renderSection = () => {
     switch (activeSection) {
       case "code-optimiser":
-        return <CodeOptimizerFormUI/>;
+        return <CodeOptimiser/>;
       case "code-debugger":
-        return <CodeDebuggerFormUI/>;
+        return <CodeDebugger/>;
       case "code-reviewer":
-        return <CodeReviewerFormUI/>;
+        return <CodeReviewer/>;
       case "comment-generator":
-        return <CommentGeneratorFormUI/>;
+        return <CommentGenerator/>;
       default:
         return <div>No section selected</div>;
     }
   };
 
   return (
-    <div>
-      <h1>Code Companion</h1>
+    <div className="App">
       <nav>
+        <div className="logo">#CodeCompanion</div>
         <button onClick={() => handleSectionChange("code-optimiser")}>
           Code Optimiser
         </button>
@@ -42,26 +39,34 @@ const HomePage = () => {
         <button onClick={() => handleSectionChange("comment-generator")}>
           Comment Generator
         </button>
+        {/* This section needs to be editied for logout  */}
+        <button onClick={() => handleSectionChange("comment-generator")}> 
+          Comment Generator
+        </button>
       </nav>
       <main>{renderSection()}</main>
+      <div className="text-input-container">
+        <textarea placeholder="Type your code here..."></textarea>
+        <button>Submit</button>
+      </div>
     </div>
   );
 };
 
 const CodeOptimiser = () => {
-  return <div>This is the Code Optimiser section</div>;
+  return <div className="header">Code Optimiser</div>;
 };
 
 const CodeDebugger = () => {
-  return <div>This is the Code Debugger section</div>;
+  return <div className="header">Code Debugger</div>;
 };
 
 const CodeReviewer = () => {
-  return <div>This is the Code Reviewer section</div>;
+  return <div className="header">Code Reviewer section</div>;
 };
 
 const CommentGenerator = () => {
-  return <div>This is the Comment Generator section</div>;
+  return <div className="header">Comment Generator</div>;
 };
 
 export default HomePage;

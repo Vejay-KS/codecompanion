@@ -23,7 +23,7 @@ const CodeReviewerFormUI = () => {
   };
 
   return (
-    <div>
+    <div className="input-container">
       <input type="text" value={inputCode} onChange={(e) => setInputCode(e.target.value)} />
       <button onClick={handleSubmit}>Review Code</button>
       <div>{codeCompletion}</div>
