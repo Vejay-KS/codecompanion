@@ -4,7 +4,7 @@ from codecompanionapp import BaseLLM, FilesHandler
 class CodeDebuggerForm(forms.Form, BaseLLM.BaseLLM1):
     
     __INPUT_FILE_HELP_TEXT = 'maximum 5MB'
-    input_code = forms.CharField(widget=forms.TextInput(), required=False)
+    input_code = forms.CharField(widget=forms.Textarea(), required=False)
 
     input_file = forms.FileField(
         label='Upload File',

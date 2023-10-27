@@ -1,14 +1,13 @@
 import requests
 import json
+import openai
 import os
-# from bardapi import Bard
-
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class BaseLLM1():
 
     __API_KEY = ""
-    __API_ENDPOINT = ""
-    __BARD_TOKEN = ''
+    __API_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 
     def _get_headers(self):
         headers = {
@@ -17,11 +16,12 @@ class BaseLLM1():
         }
         return headers
 
-    def _get_data(self, messages, model="gpt-3.5-turbo-0613", temperature=1):
+    def _get_data(self, messages, model="gpt-3.5-turbo", temperature=1):
         data = {
             "model": model,
-            "messages": messages,
+            "messages": [{"role": "user", "content": messages}],
             "temperature": temperature,
+            "max_tokens": 100
         }
         return data
 

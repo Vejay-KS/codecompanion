@@ -60,17 +60,19 @@ def code_debugger(request):
 	if request.method == "POST":
 		form = ftCodeDebugger.CodeDebuggerForm(request.POST, request.FILES)
 		if form.is_valid():
-			file_name = request.FILES['input_file'].name
-			if file_name.endswith(JavaFiles.JavaFile.get_file_type()):
-				input_file = JavaFiles.JavaFile.read_file(request.FILES.get('input_file', ""))
-			elif file_name.endswith(PythonFiles.PythonFile.get_file_type()):
-				input_file = PythonFiles.PythonFile.read_file(request.FILES.get('input_file', ""))
+			if request.FILES:
+				file_name = request.FILES['input_file'].name
+				if file_name.endswith(JavaFiles.JavaFile.get_file_type()):
+					input_file = JavaFiles.JavaFile.read_file(request.FILES.get('input_file', ""))
+				elif file_name.endswith(PythonFiles.PythonFile.get_file_type()):
+					input_file = PythonFiles.PythonFile.read_file(request.FILES.get('input_file', ""))
+				else:
+					input_file = ""
 			else:
 				input_file = ""
 			input_code = form.cleaned_data.get('input_code')
 			responseFromLLM = form.generate_chat_completion(input_file, input_code)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCodeDebugger.CodeDebuggerForm()
 	return render(request=request, template_name="codecompanionapp/codeDebugger.html", context={"codeDebugger_form":form})
 
@@ -80,10 +82,8 @@ def code_optimizer(request):
 		form = ftCodeOptimizer.CodeOptimizerForm(request.POST)
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
 			responseFromLLM = form.generate_chat_completion(input_code)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCodeOptimizer.CodeOptimizerForm()
 	return render(request=request, template_name="codecompanionapp/codeOptimizer.html", context={"codeOptimizer_form":form})
 
@@ -93,8 +93,7 @@ def code_reviewer(request):
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
 			responseFromLLM = form.generate_chat_completion(input_code)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCodeReviewer.CodeReviewerForm()
 	return render(request=request, template_name="codecompanionapp/codeReviewer.html", context={"codeReviewer_form":form})
 
@@ -103,10 +102,8 @@ def comment_generator(request):
 		form = ftCommentGenerator.CommentGeneratorForm(request.POST)
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
 			responseFromLLM = form.generate_chat_completion(input_code)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCommentGenerator.CommentGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/commentGenerator.html", context={"commentGenerator_form":form})
 
@@ -114,11 +111,13 @@ def documentation_helper(request):
 	if request.method == "POST":
 		form = ftDocumentationHelper.DocumentationHelperForm(request.POST, request.FILES)
 		if form.is_valid():
-			input_file = FilesHandler.FileHandler.read_file(request.FILES.get('input_file'))
+			if request.FILES:
+				input_file = FilesHandler.FileHandler.read_file(request.FILES.get('input_file', ""))
+			else:
+				input_file = ""
 			input_code = form.cleaned_data.get('input_code')
 			responseFromLLM = form.generate_chat_completion(input_file, input_code)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftDocumentationHelper.DocumentationHelperForm()
 	return render(request=request, template_name="codecompanionapp/documentationHelper.html", context={"documentationHelper_form":form})
 
@@ -128,11 +127,8 @@ def learning_path_recommendation(request):
 		if form.is_valid():
 			input_current_designation = form.cleaned_data.get('input_current_designation')
 			input_current_expertise = form.cleaned_data.get('input_current_expertise')
-			print(input_current_expertise)
-			print(input_current_designation)
 			responseFromLLM = form.generate_chat_completion(input_current_expertise, input_current_designation)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftLearningPathRecommendations.LearningPathRecommendationsForm()
 	return render(request=request, template_name="codecompanionapp/learningPathRecommendations.html", context={"learningPathRecommendations_form":form})
 
@@ -145,14 +141,8 @@ def letter_generator(request):
 			input_extra_details = form.cleaned_data.get('input_extra_details')
 			input_organisation_details = form.cleaned_data.get('input_organisation_details')
 			input_designation = form.cleaned_data.get('input_designation')
-			print(input_name)
-			print(input_type_of_letter)
-			print(input_extra_details)
-			print(input_organisation_details)
-			print(input_designation)
 			responseFromLLM = form.generate_chat_completion(input_name, input_type_of_letter, input_extra_details, input_organisation_details, input_designation)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftLetterGenerator.LetterGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/letterGenerator.html", context={"letterGenerator_form":form})
 
@@ -166,8 +156,7 @@ def resume_filterer(request):
 			input_file = input_file1 + '\n' + input_file2 + '\n' + input_file3
 			input_message = form.cleaned_data.get('input_job_role')
 			responseFromLLM = form.generate_chat_completion(input_file, input_message)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftResumeFilterer.ResumeFiltererForm()
 	return render(request=request, template_name="codecompanionapp/resumeFilterer.html", context={"resumeFilterer_form":form})
 
@@ -176,12 +165,13 @@ def summarize_appraisals(request):
 	if request.method == "POST":
 		form = ftSummarizeAppraisals.SummarizeAppraisalsForm(request.POST, request.FILES)
 		if form.is_valid():
-			input_file = FilesHandler.FileHandler.read_file(request.FILES.get('input_file'))
+			if request.FILES:
+				input_file = FilesHandler.FileHandler.read_file(request.FILES.get('input_file', ""))
+			else:
+				input_file = ""
 			input_appraisal = form.cleaned_data.get('input_appraisal')
-			print(input_appraisal)
 			responseFromLLM = form.generate_chat_completion(input_file, input_appraisal)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftSummarizeAppraisals.SummarizeAppraisalsForm()
 	return render(request=request, template_name="codecompanionapp/summarizeAppraisals.html", context={"summarizeAppraisals_form":form})
 
@@ -190,10 +180,8 @@ def technical_trends(request):
 		form = ftTechnicalTrends.TechnicalTrendsForm(request.POST)
 		if form.is_valid():
 			input_domain = form.cleaned_data.get('input_domain')
-			print(input_domain)
 			responseFromLLM = form.generate_chat_completion(input_domain)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftTechnicalTrends.TechnicalTrendsForm()
 	return render(request=request, template_name="codecompanionapp/technicalTrends.html", context={"technicalTrends_form":form})
 
@@ -202,10 +190,8 @@ def unit_test_generator(request):
 		form = ftUnitTestGenerator.UnitTestGeneratorForm(request.POST)
 		if form.is_valid():
 			input_code = form.cleaned_data.get('input_code')
-			print(input_code)
 			responseFromLLM = form.generate_chat_completion(input_code)
-			print(responseFromLLM)
-			return redirect(app_home)
+			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftUnitTestGenerator.UnitTestGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/unitTestGenerator.html", context={"unitTestGenerator_form":form})
 
