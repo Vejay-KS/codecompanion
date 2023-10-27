@@ -39,10 +39,14 @@ const HomePage = () => {
         <button onClick={() => handleSectionChange("comment-generator")}>
           Comment Generator
         </button>
+
+
         {/* This section needs to be editied for logout  */}
         <button onClick={() => handleSectionChange("comment-generator")}> 
-          Comment Generator
+          Log Out
         </button>
+
+
       </nav>
       <main>{renderSection()}</main>
       <div className="text-input-container">
