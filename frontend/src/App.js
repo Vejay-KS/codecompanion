@@ -16,7 +16,7 @@ class App extends Component {
         <CodeDebuggerFormUI/>
         <CodeReviewerFormUI/>
         <CommentGeneratorFormUI/> */}
-        <Register/>
+        <HomePage/>
       </Fragment>
     );
   }
