@@ -62,7 +62,7 @@ const CodeDebugger = () => {
 };
 
 const CodeReviewer = () => {
-  return <div className="header">Code Reviewer section</div>;
+  return <div className="header">Code Reviewer</div>;
 };
 
 const CommentGenerator = () => {
