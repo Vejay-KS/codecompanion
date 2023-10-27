@@ -4,7 +4,8 @@ import CodeDebuggerFormUI from "./components/CodeDebugger";
 import CodeReviewerFormUI from "./components/CodeReviewer";
 import CommentGeneratorFormUI from "./components/CommentGenerator";
 import HomePage from "./components/Home";
-
+import Login from "./components/Login";
+import Register from "./components/Registration";
 
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
         <CodeDebuggerFormUI/>
         <CodeReviewerFormUI/>
         <CommentGeneratorFormUI/> */}
-        <HomePage/>
+        <Register/>
       </Fragment>
     );
   }
