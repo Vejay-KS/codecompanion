@@ -7,3 +7,5 @@ Install Django in pipenv:
 pipenv shell
 
 pip install django
+
+Test
