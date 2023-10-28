@@ -1,5 +1,9 @@
-﻿import React from "react";
+import React from "react";
 import '../App.css';
+import CodeOptimizerFormUI from "./CodeOptimizer";
+import CodeDebuggerFormUI from "./CodeDebugger";
+import CodeReviewerFormUI from "./CodeReviewer";
+import CommentGeneratorFormUI from "./CommentGenerator";
 
 const HomePage = () => {
   const [activeSection, setActiveSection] = React.useState("code-optimiser");
@@ -11,13 +15,13 @@ const HomePage = () => {
   const renderSection = () => {
     switch (activeSection) {
       case "code-optimiser":
-        return <CodeOptimiser/>;
+        return <CodeOptimizerFormUI/>;
       case "code-debugger":
-        return <CodeDebugger/>;
+        return <CodeDebuggerFormUI/>;
       case "code-reviewer":
-        return <CodeReviewer/>;
+        return <CodeReviewerFormUI/>;
       case "comment-generator":
-        return <CommentGenerator/>;
+        return <CommentGeneratorFormUI/>;
       default:
         return <div>No section selected</div>;
     }
@@ -49,10 +53,10 @@ const HomePage = () => {
 
       </nav>
       <main>{renderSection()}</main>
-      <div className="text-input-container">
+      {/* <div className="text-input-container">
         <textarea placeholder="Type your code here..."></textarea>
         <button>Submit</button>
-      </div>
+      </div> */}
     </div>
   );
 };

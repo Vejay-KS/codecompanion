@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from "react";
-import CodeOptimizerFormUI from "./components/CodeOptimizer";
-import CodeDebuggerFormUI from "./components/CodeDebugger";
-import CodeReviewerFormUI from "./components/CodeReviewer";
-import CommentGeneratorFormUI from "./components/CommentGenerator";
+// import CodeOptimizerFormUI from "./components/CodeOptimizer";
+// import CodeDebuggerFormUI from "./components/CodeDebugger";
+// import CodeReviewerFormUI from "./components/CodeReviewer";
+// import CommentGeneratorFormUI from "./components/CommentGenerator";
 import HomePage from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Registration";
+// import Login from "./components/Login";
+// import Register from "./components/Registration";
 
 
 class App extends Component {

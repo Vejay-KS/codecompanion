@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from .serializers import CodeCompanionUserSerializer
 from .models import CodeCompanionUser
 from codecompanionapp import JavaFiles, PythonFiles, FilesHandler, ftCodeOptimizer, ftDocumentationHelper, ftCodeDebugger, ftCodeReviewer, ftCommentGenerator, ftLearningPathRecommendations, ftLetterGenerator, ftResumeFilterer, ftSummarizeAppraisals, ftTechnicalTrends, ftUnitTestGenerator
-
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -19,7 +19,7 @@ class CodecompanionView(viewsets.ModelViewSet):
 app_home = "homepage"
 def homepage(request):
 	return render(request=request, template_name='codecompanionapp/home.html')
-
+@csrf_exempt
 def register_request(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
@@ -32,6 +32,7 @@ def register_request(request):
 	form = NewUserForm()
 	return render (request=request, template_name="codecompanionapp/registerationPage.html", context={"registration_form":form})
 
+@csrf_exempt
 def login_request(request):
 	if request.method == "POST":
 		form = AuthenticationForm(request, data=request.POST)
@@ -50,12 +51,12 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request=request, template_name="codecompanionapp/loginPage.html", context={"login_form":form})
 	
-
+@csrf_exempt
 def logout_request(request):
 	logout(request)
 	messages.info(request, "You have successfully logged out.") 
 	return redirect(app_home)
-
+@csrf_exempt
 def code_debugger(request):
 	if request.method == "POST":
 		form = ftCodeDebugger.CodeDebuggerForm(request.POST, request.FILES)
@@ -76,7 +77,7 @@ def code_debugger(request):
 	form = ftCodeDebugger.CodeDebuggerForm()
 	return render(request=request, template_name="codecompanionapp/codeDebugger.html", context={"codeDebugger_form":form})
 
-
+@csrf_exempt
 def code_optimizer(request):
 	if request.method == "POST":
 		form = ftCodeOptimizer.CodeOptimizerForm(request.POST)
@@ -86,7 +87,7 @@ def code_optimizer(request):
 			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCodeOptimizer.CodeOptimizerForm()
 	return render(request=request, template_name="codecompanionapp/codeOptimizer.html", context={"codeOptimizer_form":form})
-
+@csrf_exempt
 def code_reviewer(request):
 	if request.method == "POST":
 		form = ftCodeReviewer.CodeReviewerForm(request.POST)
@@ -96,7 +97,7 @@ def code_reviewer(request):
 			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCodeReviewer.CodeReviewerForm()
 	return render(request=request, template_name="codecompanionapp/codeReviewer.html", context={"codeReviewer_form":form})
-
+@csrf_exempt
 def comment_generator(request):
 	if request.method == "POST":
 		form = ftCommentGenerator.CommentGeneratorForm(request.POST)
@@ -106,7 +107,7 @@ def comment_generator(request):
 			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftCommentGenerator.CommentGeneratorForm()
 	return render(request=request, template_name="codecompanionapp/commentGenerator.html", context={"commentGenerator_form":form})
-
+@csrf_exempt
 def documentation_helper(request):
 	if request.method == "POST":
 		form = ftDocumentationHelper.DocumentationHelperForm(request.POST, request.FILES)
@@ -120,7 +121,7 @@ def documentation_helper(request):
 			return render(request=request, template_name="codecompanionapp/output.html", context={"response": responseFromLLM})
 	form = ftDocumentationHelper.DocumentationHelperForm()
 	return render(request=request, template_name="codecompanionapp/documentationHelper.html", context={"documentationHelper_form":form})
-
+@csrf_exempt
 def learning_path_recommendation(request):
 	if request.method == "POST":
 		form = ftLearningPathRecommendations.LearningPathRecommendationsForm(request.POST)
@@ -132,6 +133,7 @@ def learning_path_recommendation(request):
 	form = ftLearningPathRecommendations.LearningPathRecommendationsForm()
 	return render(request=request, template_name="codecompanionapp/learningPathRecommendations.html", context={"learningPathRecommendations_form":form})
 
+@csrf_exempt
 def letter_generator(request):
 	if request.method == "POST":
 		form = ftLetterGenerator.LetterGeneratorForm(request.POST)

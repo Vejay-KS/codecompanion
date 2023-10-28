@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../constants';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -24,11 +24,16 @@ const CodeOptimizerFormUI = () => {
   };
 
   return (
-    <div className="input-container">
-      <input type="text" value={inputCode} onChange={(e) => setInputCode(e.target.value)} />
-      <button onClick={handleSubmit}>Generate Code Completion</button>
-      <div>{codeCompletion}</div>
-    </div>
+    // <div className="input-container">
+    //   <input type="text" value={inputCode} onChange={(e) => setInputCode(e.target.value)} />
+    //   <button onClick={handleSubmit}>Generate Code Completion</button>
+    //   <div>{codeCompletion}</div>
+    // </div>
+     <div className="text-input-container">
+        <textarea placeholder="Type your code here..."></textarea>
+        <button onClick={handleSubmit}>Generate Code Completion</button>
+        <div>{codeCompletion}</div>
+      </div> 
   );
 };
 
