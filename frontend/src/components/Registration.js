@@ -1,7 +1,5 @@
-// Register.js
-
 import React from "react";
-import '../App.css';  // Importing your styles
+import '../App.css';  
 
 const Register = () => {
   return (

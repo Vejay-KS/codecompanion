@@ -53,28 +53,33 @@ const HomePage = () => {
 
       </nav>
       <main>{renderSection()}</main>
-      {/* <div className="text-input-container">
-        <textarea placeholder="Type your code here..."></textarea>
-        <button>Submit</button>
-      </div> */}
+      
     </div>
   );
 };
 
 const CodeOptimiser = () => {
-  return <div className="header">Code Optimiser</div>;
+  return <div className="header">
+    Code Optimiser
+  </div>;
 };
 
 const CodeDebugger = () => {
-  return <div className="header">Code Debugger</div>;
+  return <div className="header">
+    Code Debugger
+  </div>;
 };
 
 const CodeReviewer = () => {
-  return <div className="header">Code Reviewer</div>;
+  return <div className="header">
+    Code Reviewer
+  </div>;
 };
 
 const CommentGenerator = () => {
-  return <div className="header">Comment Generator</div>;
+  return <div className="header">
+    Comment Generator
+  </div>;
 };
 
 export default HomePage;
